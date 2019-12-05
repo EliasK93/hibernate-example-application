@@ -10,23 +10,35 @@
     </head>
 
     <body>
-        <h2>All Companies (<span th:text="${allCompanies.spliterator().getExactSizeIfKnown()}"></span>)</h2>
-        <table>
-            <thead>
-            <th>Company</th>
-            <th>Description</th>
-            </thead>
-            <tbody>
-            <tr th:each="company : ${allCompanies}">
-                <td>
-                    <a th:href="@{/profile(company=${company.id})}">
-                        <span th:text="${company.name}"></span>
-                    </a>
-                </td>
-                <td th:text="${company.about}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class="navbar-brand" href="/">
+                <img class="navbar-brand rounded" src="pictures/logo.jpg" alt="logo" height="40">
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Main Page</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <h2 class="text-center mb-3">All Companies (<span th:text="${allCompanies.spliterator().getExactSizeIfKnown()}"></span>)</h2>
+                    <div class="card-columns">
+                        <div class="card bg-light" th:each="company : ${allCompanies}">
+                            <div class="card-body text-center">
+                                <a th:href="@{/profile(company=${company.id})}">
+                                    <h4 class="card-title" th:text="${company.name}"></h4>
+                                </a>
+                                <p class="card-text" th:text="${company.about}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
     </body>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
