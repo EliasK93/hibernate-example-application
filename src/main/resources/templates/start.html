@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>All Companies</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+
+    <body>
+        <h2>All Companies (<span th:text="${allCompanies.spliterator().getExactSizeIfKnown()}"></span>)</h2>
+        <table>
+            <thead>
+            <th>Company</th>
+            <th>Description</th>
+            </thead>
+            <tbody>
+            <tr th:each="company : ${allCompanies}">
+                <td>
+                    <a th:href="@{/profile(company=${company.id})}">
+                        <span th:text="${company.name}"></span>
+                    </a>
+                </td>
+                <td th:text="${company.about}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>

@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  companydatabase:
+    image: mysql:5.7
+    ports:
+      - "23306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=example"
+      - "MYSQL_DATABASE=companydatabase"
