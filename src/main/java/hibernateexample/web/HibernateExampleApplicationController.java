@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HibernateExampleApplicationController {
@@ -59,6 +61,14 @@ public class HibernateExampleApplicationController {
         return "company_added";
     }
 
+    @GetMapping("/search")
+    public String searchResult(Model model, String search, String selection) {
+        if (!selection.equals("products")) model.addAttribute("result_companies", getCompaniesFromSearch(search));
+        if (!selection.equals("companies")) model.addAttribute("result_products", getProductsFromSearch(search));
+        model.addAttribute("selection", selection);
+        return "search_result";
+    }
+
     private void fillWithExamplesIfEmpty() {
         if (repository.count() != 0) return;
         CompanyGenerator companyGenerator = new CompanyGenerator();
@@ -72,6 +82,26 @@ public class HibernateExampleApplicationController {
             allProducts.addAll(company.getProducts());
         }
         return allProducts.stream().filter(p -> p.getId().equals(product_id)).findAny().orElse(null);
+    }
+
+    private List<Company> getCompaniesFromSearch(String search) {
+        LinkedList<Company> allCompanies = new LinkedList<>();
+        for (Company company : repository.findAll()) {
+            allCompanies.add(company);
+        }
+        return allCompanies.stream()
+                .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> getProductsFromSearch(String search) {
+        LinkedList<Product> allProducts = new LinkedList<>();
+        for (Company company : repository.findAll()) {
+            allProducts.addAll(company.getProducts());
+        }
+        return allProducts.stream()
+                .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
 }
