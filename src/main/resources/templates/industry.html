@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title th:text="${product.name}"></title>
+        <title th:text="${industry.name}"></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -45,14 +45,21 @@
                 <div class="col-1"></div>
                 <div class="col-10">
                     <div class="jumbotron pt-3 pb-3 bg-light">
-                        <h1 class="text-center" th:text="${product.name}"></h1>
-                        <p class="mt-3" th:text="${product.about}"></p>
-                        <p class="text-center mt-3">
-                            Offered by:
-                            <a th:href="@{/profile(company=${product.company.id})}">
-                                <span th:text="${product.company.name}"></span>
-                            </a>
-                        </p>
+                        <h1 class="text-center" th:text="${industry.name}"></h1>
+                        <p class="mt-3" th:text="${industry.about}"></p>
+                    </div>
+                    <h2 class="text-center mb-3">
+                        Companies in this Industry (<span th:text="${industry.getCompanies().size()}"></span>)
+                    </h2>
+                    <div class="card-columns">
+                        <div class="card bg-light" th:each="company : ${industry.getCompanies()}">
+                            <div class="card-body text-center">
+                                <a th:href="@{/profile(company=${company.id})}">
+                                    <h4 class="card-title" th:text="${company.name}"></h4>
+                                </a>
+                                <p class="card-text" th:text="${company.about}"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-1"></div>

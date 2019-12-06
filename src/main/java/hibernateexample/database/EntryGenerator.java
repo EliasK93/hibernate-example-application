@@ -1,9 +1,11 @@
 package hibernateexample.database;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class CompanyGenerator {
+public class EntryGenerator {
 
     private Random random = new Random();
 
@@ -25,6 +27,18 @@ public class CompanyGenerator {
             "Energizer", "SuperMagnetizer", "Speedster", "Monolith", "MetaTransmitter", "Forge"};
     private final String[] lastPartsProduct = new String[]{
             "8000", "T340", "Compact", "Pro", "All-In-One", "400", "V23", "P87"};
+
+    private final LinkedList<Industry> industries;
+
+    public EntryGenerator() {
+        String[] industryNames = new String[]{
+                "Technology", "Pharmaceutics", "Telecommunications", "Financial services",
+                "Insurance", "Electronics", "Health Care", "Education"};
+        industries = new LinkedList<>();
+        for (String industryName : industryNames) {
+            industries.add(new Industry(industryName, exampleDescription, new LinkedList<>()));
+        }
+    }
 
     private String generateRandomCompanyName() {
         String firstPart = firstPartsCompany[random.nextInt(firstPartsCompany.length)];
@@ -49,9 +63,21 @@ public class CompanyGenerator {
         company.setProducts(products);
     }
 
+    private void addRandomIndustryListTo(Company company) {
+        int numberOfIndustries = random.nextInt(3) + 1;
+        Collections.shuffle(industries, random);
+        LinkedList<Industry> industriesToAdd = new LinkedList<>();
+        for (int i = 0; i < numberOfIndustries; i++) {
+            industriesToAdd.add(industries.get(i));
+            industries.get(i).getCompanies().add(company);
+        }
+        company.setIndustries(industriesToAdd);
+    }
+
     private Company generateRandomCompany() {
         Company company = new Company(generateRandomCompanyName(), exampleDescription);
         addRandomProductListTo(company);
+        addRandomIndustryListTo(company);
         return company;
     }
 
@@ -61,6 +87,12 @@ public class CompanyGenerator {
             companies.add(generateRandomCompany());
         }
         return companies;
+    }
+
+    public LinkedList<Industry> returnAlphabeticallySortedIndustries() {
+        Comparator<Industry> nameComparator = Comparator.comparing(industry -> industry.getName().toLowerCase());
+        industries.sort(nameComparator);
+        return industries;
     }
 
 }

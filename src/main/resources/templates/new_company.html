@@ -33,6 +33,7 @@
                             <option value="all">Everything</option>
                             <option value="companies">Companies</option>
                             <option value="products">Products</option>
+                            <option value="industries">Industries</option>
                         </select>
                         <button class="btn btn-light ml-3" type="submit">Search</button>
                     </form>
@@ -53,6 +54,15 @@
                             <div class="form-group">
                                 <label for="about">Description:</label>
                                 <textarea class="form-control" id="about" placeholder="Enter a description" name="about" rows="4" required></textarea>
+                            </div>
+                            <!--TODO: add js to ensure that at least one checkbox is ticked-->
+                            <div class="form-group">
+                                <label for="industries">Industries:</label>
+                                <div id="industries">
+                                    <label class="checkbox-inline mr-3" th:each="industry : ${industry_options}">
+                                        <input type="checkbox" name="industry_options" th:id="${industry.id}" th:value="${industry.id}" th:text="${industry.name}">
+                                    </label>
+                                </div>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-secondary">Submit</button>

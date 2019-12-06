@@ -1,6 +1,10 @@
 package hibernateexample.database;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @Data
-public class Company {
+public class Industry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +25,8 @@ public class Company {
     @Column(length = 1000)
     private String about;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "company")
-    private List<Product> products;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Industry> industries;
+    @NonNull
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "industries")
+    private List<Company> companies;
 
 }
