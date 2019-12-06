@@ -37,7 +37,9 @@
                     <div class="card-columns">
                         <div class="card bg-light" th:each="product : ${company.getProducts()}">
                             <div class="card-body text-center">
-                                <h4 class="card-title" th:text="${product.name}"></h4>
+                                <a th:href="@{/product(product_id=${product.id})}">
+                                    <h4 class="card-title" th:text="${product.name}"></h4>
+                                </a>
                                 <p class="card-text" th:text="${product.about}"></p>
                             </div>
                         </div>

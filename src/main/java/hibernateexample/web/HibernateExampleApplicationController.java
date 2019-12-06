@@ -32,6 +32,17 @@ public class HibernateExampleApplicationController {
         return "profile";
     }
 
+    @GetMapping("/product")
+    public String product(Model model, Long product_id) {
+        Product product = getProductFromID(product_id);
+        if (product != null) {
+            model.addAttribute("product", product);
+            return "product";
+        } else {
+            return "error";
+        }
+    }
+
     @GetMapping("/new_company")
     public String addCompanyForm() {
         return "new_company";
@@ -53,6 +64,14 @@ public class HibernateExampleApplicationController {
         CompanyGenerator companyGenerator = new CompanyGenerator();
         LinkedList<Company> companies = companyGenerator.generateRandomCompanies(50);
         repository.saveAll(companies);
+    }
+
+    private Product getProductFromID(Long product_id) {
+        LinkedList<Product> allProducts = new LinkedList<>();
+        for (Company company : repository.findAll()) {
+            allProducts.addAll(company.getProducts());
+        }
+        return allProducts.stream().filter(p -> p.getId().equals(product_id)).findAny().orElse(null);
     }
 
 }
