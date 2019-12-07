@@ -56,6 +56,9 @@
                                 </a>
                             </span>
                         </p>
+                        <p class="text-center mt-3">
+                            Profile created: <span th:text="${{company.creationDate}}"></span>
+                        </p>
                     </div>
                     <h2 class="text-center mb-3" th:unless="${company.getProducts().isEmpty()}">
                         All Products (<span th:text="${company.getProducts().size()}"></span>)

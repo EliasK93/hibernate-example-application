@@ -1,9 +1,13 @@
 package hibernateexample.database;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class EntryGenerator {
 
@@ -57,7 +61,8 @@ public class EntryGenerator {
         int numberOfProducts = random.nextInt(9);
         LinkedList<Product> products = new LinkedList<>();
         for (int i = 0; i < numberOfProducts; i++) {
-            Product product = new Product(company, generateRandomProductName(), exampleDescription);
+            Product product = new Product(company, generateRandomProductName(),
+                    exampleDescription, generateRandomLocalDateTimeAfter(company.getCreationDate()));
             products.add(product);
         }
         company.setProducts(products);
@@ -75,10 +80,23 @@ public class EntryGenerator {
     }
 
     private Company generateRandomCompany() {
-        Company company = new Company(generateRandomCompanyName(), exampleDescription);
+        Company company = new Company(generateRandomCompanyName(),
+                exampleDescription, generateRandomLocalDateTimeWithinLastThreeYears());
         addRandomProductListTo(company);
         addRandomIndustryListTo(company);
         return company;
+    }
+
+    private LocalDateTime generateRandomLocalDateTimeWithinLastThreeYears() {
+        return generateRandomLocalDateTimeAfter(LocalDateTime.now(ZoneOffset.UTC).minusYears(3));
+    }
+
+    private LocalDateTime generateRandomLocalDateTimeAfter(LocalDateTime startDateTime) {
+        LocalDateTime localDateTimeNow = LocalDateTime.now(ZoneOffset.UTC);
+        long randomDate = ThreadLocalRandom.current().nextLong(
+                startDateTime.toInstant(ZoneOffset.UTC).toEpochMilli(),
+                localDateTimeNow.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Instant.ofEpochMilli(randomDate).atZone(ZoneOffset.UTC).toLocalDateTime();
     }
 
     public LinkedList<Company> generateRandomCompanies(int numberOfCompanies) {

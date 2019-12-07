@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class HibernateExampleApplicationController {
             @RequestParam(name = "about") String about,
             @RequestParam(name = "industry_options") List<String> industryIdSelection,
             Model model) {
-        Company company = new Company(name, about);
+        Company company = new Company(name, about, LocalDateTime.now());
         LinkedList<Industry> industriesSelected = new LinkedList<>();
         for (String industry_id : industryIdSelection) {
             if (industry_id.length() > 0) { //checkbox was checked (String is not empty)
