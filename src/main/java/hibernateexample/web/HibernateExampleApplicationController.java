@@ -1,48 +1,41 @@
 package hibernateexample.web;
 
+import hibernateexample.DatabaseService;
 import hibernateexample.database.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class HibernateExampleApplicationController {
 
-    private EntryGenerator entryGenerator;
+    private DatabaseService databaseService;
 
-    private final CompanyRepository companyRepository;
-    private final IndustryRepository industryRepository;
-
-    public HibernateExampleApplicationController(CompanyRepository companyRepository, IndustryRepository industryRepository) {
-        this.companyRepository = companyRepository;
-        this.industryRepository = industryRepository;
-        fillWithExamplesIfEmpty();
+    @Autowired
+    public HibernateExampleApplicationController(DatabaseService databaseService) {
+        this.databaseService = databaseService;
     }
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("allCompanies", companyRepository.findAll());
+        model.addAttribute("allCompanies", databaseService.findAllCompanies());
         return "start";
     }
 
     @GetMapping("/profile")
     public String details(Model model, Long company) {
-        model.addAttribute("company", companyRepository.findCompanyById(company));
+        model.addAttribute("company", databaseService.findCompanyById(company));
         return "profile";
     }
 
     @GetMapping("/product")
     public String product(Model model, Long product_id) {
-        Product product = getProductFromID(product_id);
+        Product product = databaseService.findProductById(product_id);
         if (product != null) {
             model.addAttribute("product", product);
             return "product";
@@ -53,14 +46,14 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/industry")
     public String industry(Model model, Long industry_id) {
-        Industry industry = industryRepository.findIndustryById(industry_id);
+        Industry industry = databaseService.findIndustryById(industry_id);
         model.addAttribute("industry", industry);
         return "industry";
     }
 
     @GetMapping("/new_company")
     public String addCompanyForm(Model model) {
-        model.addAttribute("industry_options", entryGenerator.returnAlphabeticallySortedIndustries());
+        model.addAttribute("industry_options", databaseService.returnAlphabeticallySortedIndustries());
         return "new_company";
     }
 
@@ -70,7 +63,7 @@ public class HibernateExampleApplicationController {
             @RequestParam(name = "about") String about,
             @RequestParam(name = "industry_options") List<String> industryIdSelection,
             Model model) {
-        Company company = createCompanyFromFormInput(name, about, industryIdSelection);
+        Company company = databaseService.createCompanyFromFormInput(name, about, industryIdSelection);
         model.addAttribute("company", company);
         return "company_added";
     }
@@ -78,73 +71,16 @@ public class HibernateExampleApplicationController {
     @GetMapping("/search")
     public String searchResult(Model model, String search, String selection) {
         if (selection.equals("companies") || selection.equals("all")) {
-            model.addAttribute("result_companies", getCompaniesFromSearch(search));
+            model.addAttribute("result_companies", databaseService.getCompaniesFromSearch(search));
         }
         if (selection.equals("products") || selection.equals("all")) {
-            model.addAttribute("result_products", getProductsFromSearch(search));
+            model.addAttribute("result_products", databaseService.getProductsFromSearch(search));
         }
         if (selection.equals("industries") || selection.equals("all")) {
-            model.addAttribute("result_industries", getIndustriesFromSearch(search));
+            model.addAttribute("result_industries", databaseService.getIndustriesFromSearch(search));
         }
         model.addAttribute("selection", selection);
         return "search_result";
-    }
-
-    private void fillWithExamplesIfEmpty() {
-        if (companyRepository.count() != 0) return;
-        entryGenerator = new EntryGenerator();
-        LinkedList<Company> companies = entryGenerator.generateRandomCompanies(50);
-        LinkedList<Industry> industries = entryGenerator.returnAlphabeticallySortedIndustries();
-        companyRepository.saveAll(companies);
-        industryRepository.saveAll(industries);
-    }
-
-    private Product getProductFromID(Long product_id) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
-                .flatMap(s -> s.getProducts().stream())
-                .filter(p -> p.getId().equals(product_id))
-                .findAny()
-                .orElse(null);
-    }
-
-    private List<Company> getCompaniesFromSearch(String search) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
-                .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
-    }
-
-    private List<Product> getProductsFromSearch(String search) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
-                .flatMap(s -> s.getProducts().stream())
-                .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
-    }
-
-    private List<Industry> getIndustriesFromSearch(String search) {
-        return StreamSupport.stream(industryRepository.findAll().spliterator(), false)
-                .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
-                .collect(Collectors.toList());
-    }
-
-    private Company createCompanyFromFormInput(String name, String about, List<String> industryIdSelection) {
-        LinkedList<Industry> industriesSelected = createIndustryListFromSelection(industryIdSelection);
-        Company company = new Company(name, about, LocalDateTime.now());
-        company.setIndustries(industriesSelected);
-        for (Industry industry : industriesSelected) {
-            industry.getCompanies().add(company);
-        }
-        companyRepository.save(company);
-        return company;
-    }
-
-    private LinkedList<Industry> createIndustryListFromSelection(List<String> industryIdSelection) {
-        LinkedList<Industry> industryList = new LinkedList<>();
-        for (String industry_id : industryIdSelection) {
-            if (industry_id.length() > 0) { //checkbox was checked (String is not empty)
-                industryList.add(industryRepository.findIndustryById(Long.parseLong(industry_id)));
-            }
-        }
-        return industryList;
     }
 
 }
