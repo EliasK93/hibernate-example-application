@@ -20,6 +20,15 @@
                         <a class="nav-link" href="/">Main Page</a>
                     </div>
                     <div class="nav-item">
+                        <a class="nav-link" href="/">Companies</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_products">Products</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_industries">Industries</a>
+                    </div>
+                    <div class="nav-item">
                         <a class="nav-link" href="/new_company">Add Company</a>
                     </div>
                 </div>
@@ -47,7 +56,7 @@
                     <div class="jumbotron pt-3 pb-3 bg-light">
                         <h1 class="text-center">Success!</h1>
                         <p class="text-center mt-3">Company <span th:text="${company.name}"></span> was successfully added</p>
-                        <a class="text-center" th:href="@{/profile(company=${company.id})}"><p>Go to Profile</p></a>
+                        <a class="text-center" th:href="@{/company(company_id=${company.id})}"><p>Go to Profile</p></a>
                         <a class="text-center" href="/"><p>Back to Main Page</p></a>
                     </div>
                 </div>

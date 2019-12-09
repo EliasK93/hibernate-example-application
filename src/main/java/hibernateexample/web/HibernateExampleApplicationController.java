@@ -22,15 +22,32 @@ public class HibernateExampleApplicationController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("allCompanies", databaseService.findAllCompanies());
-        return "start";
+    public String index() {
+        return "redirect:/all_companies";
     }
 
-    @GetMapping("/profile")
-    public String details(Model model, Long company) {
-        model.addAttribute("company", databaseService.findCompanyById(company));
-        return "profile";
+    @GetMapping("/all_companies")
+    public String allCompanies(Model model) {
+        model.addAttribute("allCompanies", databaseService.findAllCompanies());
+        return "all_companies";
+    }
+
+    @GetMapping("/all_products")
+    public String allProducts(Model model) {
+        model.addAttribute("allProducts", databaseService.findAllProducts());
+        return "all_products";
+    }
+
+    @GetMapping("/all_industries")
+    public String allIndustries(Model model) {
+        model.addAttribute("allIndustries", databaseService.findAllIndustries());
+        return "all_industries";
+    }
+
+    @GetMapping("/company")
+    public String details(Model model, Long company_id) {
+        model.addAttribute("company", databaseService.findCompanyById(company_id));
+        return "company";
     }
 
     @GetMapping("/product")

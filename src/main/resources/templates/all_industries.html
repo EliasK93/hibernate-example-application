@@ -20,6 +20,15 @@
                         <a class="nav-link" href="/">Main Page</a>
                     </div>
                     <div class="nav-item">
+                        <a class="nav-link" href="/">Companies</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_products">Products</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_industries">Industries</a>
+                    </div>
+                    <div class="nav-item">
                         <a class="nav-link" href="/new_company">Add Company</a>
                     </div>
                 </div>
@@ -44,14 +53,14 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-10">
-                    <h2 class="text-center mb-3">All Companies (<span th:text="${allCompanies.size()}"></span>)</h2>
+                    <h2 class="text-center mb-3">All Industries (<span th:text="${allIndustries.size()}"></span>)</h2>
                     <div class="card-columns">
-                        <div class="card bg-light" th:each="company : ${allCompanies}">
+                        <div class="card bg-light" th:each="industry : ${allIndustries}">
                             <div class="card-body text-center">
-                                <a th:href="@{/profile(company=${company.id})}">
-                                    <h4 class="card-title" th:text="${company.name}"></h4>
+                                <a th:href="@{/industry(industry_id=${industry.id})}">
+                                    <h4 class="card-title" th:text="${industry.name}"></h4>
                                 </a>
-                                <p class="card-text" th:text="${company.about}"></p>
+                                <p class="card-text" th:text="${industry.about}"></p>
                             </div>
                         </div>
                     </div>

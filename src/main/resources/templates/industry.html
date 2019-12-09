@@ -20,6 +20,15 @@
                         <a class="nav-link" href="/">Main Page</a>
                     </div>
                     <div class="nav-item">
+                        <a class="nav-link" href="/">Companies</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_products">Products</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_industries">Industries</a>
+                    </div>
+                    <div class="nav-item">
                         <a class="nav-link" href="/new_company">Add Company</a>
                     </div>
                 </div>
@@ -54,7 +63,7 @@
                     <div class="card-columns">
                         <div class="card bg-light" th:each="company : ${industry.getCompanies()}">
                             <div class="card-body text-center">
-                                <a th:href="@{/profile(company=${company.id})}">
+                                <a th:href="@{/company(company_id=${company.id})}">
                                     <h4 class="card-title" th:text="${company.name}"></h4>
                                 </a>
                                 <p class="card-text" th:text="${company.about}"></p>
