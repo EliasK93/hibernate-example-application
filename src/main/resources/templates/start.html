@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>All Companies</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
+            <a class="navbar-brand" href="/">
+                <img class="navbar-brand rounded" src="pictures/logo.jpg" alt="logo" height="40">
+            </a>
+            <div class="navbar-nav mr-auto">
+                <div class="navbar-nav">
+                    <div class="nav-item">
+                        <a class="nav-link" href="/">Main Page</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_companies">Companies</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_products">Products</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/all_industries">Industries</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="/new_company">Add Company</a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-nav">
+                <div class="nav-item">
+                    <form class="form-inline" action="/search">
+                        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
+                        <label for="selection"></label>
+                        <select class="form-control" id="selection" name="selection">
+                            <option value="all">Everything</option>
+                            <option value="companies">Companies</option>
+                            <option value="products">Products</option>
+                            <option value="industries">Industries</option>
+                        </select>
+                        <button class="btn btn-light ml-3" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">
+                    <div th:unless="${newestCompanies.isEmpty()}">
+                        <h2 class="text-center mb-3">Newest Companies</h2>
+                        <div class="card-columns">
+                            <div class="card bg-light" th:each="company : ${newestCompanies}">
+                                <div class="card-body text-center">
+                                    <a th:href="@{/company(company_id=${company.id})}">
+                                        <h4 class="card-title" th:text="${company.name}"></h4>
+                                    </a>
+                                    <p class="card-text" th:text="${company.about}"></p>
+                                    <p class="card-text text-center">
+                                        Industries:
+                                        <span th:each="industry, iterator : ${company.getIndustries()}">
+                                            <span th:text="${iterator.index > 0} ? ',' : ''"></span>
+                                            <a th:href="@{/industry(industry_id=${industry.id})}">
+                                                <span th:text="${industry.name}"></span>
+                                            </a>
+                                        </span>
+                                    </p>
+                                    <p class="card-text text-center">
+                                        Profile created:
+                                        <span th:text="${{company.creationDate}}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:unless="${newestProducts.isEmpty()}">
+                        <h2 class="text-center mb-3">Newest Products</h2>
+                        <div class="card-columns">
+                            <div class="card bg-light" th:each="product : ${newestProducts}">
+                                <div class="card-body text-center">
+                                    <a th:href="@{/product(product_id=${product.id})}">
+                                        <h4 class="card-title" th:text="${product.name}"></h4>
+                                    </a>
+                                    <p class="card-text" th:text="${product.about}"></p>
+                                    <p class="card-text text-center">
+                                        Offered by:
+                                        <a th:href="@{/company(company_id=${product.company.id})}">
+                                            <span th:text="${product.company.name}"></span>
+                                        </a>
+                                    </p>
+                                    <p class="card-text text-center">
+                                        Product added:
+                                        <span th:text="${{product.creationDate}}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:unless="${biggestIndustries.isEmpty()}">
+                        <h2 class="text-center mb-3">Biggest Industries</h2>
+                        <div class="card-columns">
+                            <div class="card bg-light" th:each="industry : ${biggestIndustries}">
+                                <div class="card-body text-center">
+                                    <a th:href="@{/industry(industry_id=${industry.id})}">
+                                        <h4 class="card-title" th:text="${industry.name}"></h4>
+                                    </a>
+                                    <p class="card-text" th:text="${industry.about}"></p>
+                                    <p class="card-text text-center">
+                                        Companies in this Industry:
+                                        <span th:text="${{industry.getCompanies().size()}}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+    </body>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</html>

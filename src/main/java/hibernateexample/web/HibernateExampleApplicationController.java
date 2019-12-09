@@ -22,8 +22,11 @@ public class HibernateExampleApplicationController {
     }
 
     @GetMapping("/")
-    public String index() {
-        return "redirect:/all_companies";
+    public String index(Model model) {
+        model.addAttribute("newestCompanies", databaseService.findNewestCompanies(3));
+        model.addAttribute("newestProducts", databaseService.findNewestProducts(3));
+        model.addAttribute("biggestIndustries", databaseService.findBiggestIndustries(3));
+        return "start";
     }
 
     @GetMapping("/all_companies")

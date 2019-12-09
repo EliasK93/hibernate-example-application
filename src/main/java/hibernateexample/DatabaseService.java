@@ -19,7 +19,8 @@ public class DatabaseService {
     private final IndustryRepository industryRepository;
 
     @Autowired
-    public DatabaseService(EntryGenerator entryGenerator, CompanyRepository companyRepository, IndustryRepository industryRepository) {
+    public DatabaseService(EntryGenerator entryGenerator, CompanyRepository companyRepository,
+                           IndustryRepository industryRepository) {
         this.entryGenerator = entryGenerator;
         this.companyRepository = companyRepository;
         this.industryRepository = industryRepository;
@@ -108,7 +109,27 @@ public class DatabaseService {
         return findAllIndustries().stream()
                 .sorted(Comparator.comparing(industry -> industry.getName().toLowerCase()))
                 .collect(Collectors.toList());
+    }
 
+    public List<Company> findNewestCompanies(int maximumNumber) {
+        return findAllCompanies().stream()
+                .sorted(Comparator.comparing(Company::getCreationDate).reversed())
+                .limit(maximumNumber)
+                .collect(Collectors.toList());
+    }
+
+    public List<Product> findNewestProducts(int maximumNumber) {
+        return findAllProducts().stream()
+                .sorted(Comparator.comparing(Product::getCreationDate).reversed())
+                .limit(maximumNumber)
+                .collect(Collectors.toList());
+    }
+
+    public List<Industry> findBiggestIndustries(int maximumNumber) {
+        return findAllIndustries().stream()
+                .sorted(Comparator.comparing((Industry industry) -> industry.getCompanies().size()).reversed())
+                .limit(maximumNumber)
+                .collect(Collectors.toList());
     }
 
 }
