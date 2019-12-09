@@ -40,7 +40,7 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/all_industries")
     public String allIndustries(Model model) {
-        model.addAttribute("allIndustries", databaseService.findAllIndustries());
+        model.addAttribute("allIndustries", databaseService.findAllIndustriesSorted());
         return "all_industries";
     }
 
@@ -70,7 +70,7 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/new_company")
     public String addCompanyForm(Model model) {
-        model.addAttribute("industry_options", databaseService.returnAlphabeticallySortedIndustries());
+        model.addAttribute("industry_options", databaseService.findAllIndustriesSorted());
         return "new_company";
     }
 

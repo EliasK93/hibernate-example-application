@@ -1,8 +1,10 @@
 package hibernateexample;
 
 import hibernateexample.database.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,12 +13,14 @@ import java.util.stream.StreamSupport;
 @Service
 public class DatabaseService {
 
-    private EntryGenerator entryGenerator;
+    private final EntryGenerator entryGenerator;
 
     private final CompanyRepository companyRepository;
     private final IndustryRepository industryRepository;
 
-    public DatabaseService(CompanyRepository companyRepository, IndustryRepository industryRepository) {
+    @Autowired
+    public DatabaseService(EntryGenerator entryGenerator, CompanyRepository companyRepository, IndustryRepository industryRepository) {
+        this.entryGenerator = entryGenerator;
         this.companyRepository = companyRepository;
         this.industryRepository = industryRepository;
         fillWithExamplesIfEmpty();
@@ -24,18 +28,10 @@ public class DatabaseService {
 
     private void fillWithExamplesIfEmpty() {
         if (companyRepository.count() != 0) return;
-        entryGenerator = new EntryGenerator();
         LinkedList<Company> companies = entryGenerator.generateRandomCompanies(50);
-        LinkedList<Industry> industries = entryGenerator.returnAlphabeticallySortedIndustries();
+        LinkedList<Industry> industries = entryGenerator.returnAllIndustries();
         companyRepository.saveAll(companies);
         industryRepository.saveAll(industries);
-    }
-
-    public Product findProductById(Long product_id) {
-        return findAllProducts().stream()
-                .filter(p -> p.getId().equals(product_id))
-                .findAny()
-                .orElse(null);
     }
 
     public List<Company> getCompaniesFromSearch(String search) {
@@ -97,12 +93,22 @@ public class DatabaseService {
         return companyRepository.findCompanyById(company);
     }
 
+    public Product findProductById(Long product_id) {
+        return findAllProducts().stream()
+                .filter(p -> p.getId().equals(product_id))
+                .findAny()
+                .orElse(null);
+    }
+
     public Industry findIndustryById(Long industry_id) {
         return industryRepository.findIndustryById(industry_id);
     }
 
-    public List<Industry> returnAlphabeticallySortedIndustries() {
-        return entryGenerator.returnAlphabeticallySortedIndustries();
+    public List<Industry> findAllIndustriesSorted() {
+        return findAllIndustries().stream()
+                .sorted(Comparator.comparing(industry -> industry.getName().toLowerCase()))
+                .collect(Collectors.toList());
+
     }
 
 }

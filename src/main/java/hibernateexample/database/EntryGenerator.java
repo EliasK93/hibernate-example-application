@@ -1,14 +1,15 @@
 package hibernateexample.database;
 
+import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Service
 public class EntryGenerator {
 
     private Random random = new Random();
@@ -107,9 +108,7 @@ public class EntryGenerator {
         return companies;
     }
 
-    public LinkedList<Industry> returnAlphabeticallySortedIndustries() {
-        Comparator<Industry> nameComparator = Comparator.comparing(industry -> industry.getName().toLowerCase());
-        industries.sort(nameComparator);
+    public LinkedList<Industry> returnAllIndustries() {
         return industries;
     }
 
