@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-10">
-                    <h2 class="text-center mb-3">All Companies (<span th:text="${allCompanies.spliterator().getExactSizeIfKnown()}"></span>)</h2>
+                    <h2 class="text-center mb-3">All Companies (<span th:text="${allCompanies.size()}"></span>)</h2>
                     <div class="card-columns">
                         <div class="card bg-light" th:each="company : ${allCompanies}">
                             <div class="card-body text-center">

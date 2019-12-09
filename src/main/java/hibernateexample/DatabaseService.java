@@ -32,34 +32,32 @@ public class DatabaseService {
     }
 
     public Product findProductById(Long product_id) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
-                .flatMap(s -> s.getProducts().stream())
+        return findAllProducts().stream()
                 .filter(p -> p.getId().equals(product_id))
                 .findAny()
                 .orElse(null);
     }
 
     public List<Company> getCompaniesFromSearch(String search) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
+        return findAllCompanies().stream()
                 .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<Product> getProductsFromSearch(String search) {
-        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
-                .flatMap(s -> s.getProducts().stream())
+        return findAllProducts().stream()
                 .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public List<Industry> getIndustriesFromSearch(String search) {
-        return StreamSupport.stream(industryRepository.findAll().spliterator(), false)
+        return findAllIndustries().stream()
                 .filter(p -> p.getName().toLowerCase().contains(search.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public Company createCompanyFromFormInput(String name, String about, List<String> industryIdSelection) {
-        LinkedList<Industry> industriesSelected = createIndustryListFromSelection(industryIdSelection);
+        List<Industry> industriesSelected = createIndustryListFromSelection(industryIdSelection);
         Company company = new Company(name, about, LocalDateTime.now());
         company.setIndustries(industriesSelected);
         for (Industry industry : industriesSelected) {
@@ -69,7 +67,7 @@ public class DatabaseService {
         return company;
     }
 
-    private LinkedList<Industry> createIndustryListFromSelection(List<String> industryIdSelection) {
+    private List<Industry> createIndustryListFromSelection(List<String> industryIdSelection) {
         LinkedList<Industry> industryList = new LinkedList<>();
         for (String industry_id : industryIdSelection) {
             if (industry_id.length() > 0) { //checkbox was checked (String is not empty)
@@ -79,8 +77,20 @@ public class DatabaseService {
         return industryList;
     }
 
-    public Iterable<Company> findAllCompanies() {
-        return companyRepository.findAll();
+    public List<Company> findAllCompanies() {
+        return StreamSupport.stream(companyRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+    public List<Product> findAllProducts() {
+        return findAllCompanies().stream()
+                .flatMap(s -> s.getProducts().stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Industry> findAllIndustries() {
+        return StreamSupport.stream(industryRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public Company findCompanyById(Long company) {
