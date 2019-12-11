@@ -55,7 +55,7 @@
                 <div class="col-10">
                     <div class="jumbotron pt-3 pb-3 bg-light">
                         <h1 class="text-center">Add new company</h1>
-                        <form method="post" action="/company_added">
+                        <form method="post" action="/company_added" id="form">
                             <div class="form-group">
                                 <label for="name">Name:</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter company name" name="name" required>
@@ -64,14 +64,14 @@
                                 <label for="about">Description:</label>
                                 <textarea class="form-control" id="about" placeholder="Enter a description" name="about" rows="4" required></textarea>
                             </div>
-                            <!--TODO: add js to ensure that at least one checkbox is ticked-->
                             <div class="form-group">
                                 <label for="industries">Industries:</label>
                                 <div id="industries">
                                     <label class="checkbox-inline mr-3" th:each="industry : ${industry_options}">
-                                        <input type="checkbox" name="industry_options" th:id="${industry.id}" th:value="${industry.id}" th:text="${industry.name}">
+                                        <input type="checkbox" name="industry_options" th:id="${industry.id}" th:value="${industry.id}" th:text="' '+${industry.name}" class="industry_checkbox">
                                     </label>
                                 </div>
+                                <div id="checkboxAlert"></div>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-secondary">Submit</button>
@@ -86,4 +86,5 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="checkboxValidation.js"></script>
 </html>
