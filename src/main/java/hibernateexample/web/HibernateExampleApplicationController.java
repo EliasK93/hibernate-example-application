@@ -25,7 +25,7 @@ public class HibernateExampleApplicationController {
     public String index(Model model) {
         model.addAttribute("newestCompanies", databaseService.findNewestCompanies(3));
         model.addAttribute("newestProducts", databaseService.findNewestProducts(3));
-        model.addAttribute("biggestIndustries", databaseService.findBiggestIndustries(3));
+        model.addAttribute("industriesSortedBySize", databaseService.findAllIndustriesSortedBySize());
         return "start";
     }
 
@@ -43,7 +43,7 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/all_industries")
     public String allIndustries(Model model) {
-        model.addAttribute("allIndustries", databaseService.findAllIndustriesSorted());
+        model.addAttribute("allIndustries", databaseService.findAllIndustriesSortedByName());
         return "all_industries";
     }
 
@@ -73,7 +73,7 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/new_company")
     public String addCompanyForm(Model model) {
-        model.addAttribute("industry_options", databaseService.findAllIndustriesSorted());
+        model.addAttribute("industry_options", databaseService.findAllIndustriesSortedByName());
         return "new_company";
     }
 

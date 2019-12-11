@@ -105,7 +105,7 @@ public class DatabaseService {
         return industryRepository.findIndustryById(industry_id);
     }
 
-    public List<Industry> findAllIndustriesSorted() {
+    public List<Industry> findAllIndustriesSortedByName() {
         return findAllIndustries().stream()
                 .sorted(Comparator.comparing(industry -> industry.getName().toLowerCase()))
                 .collect(Collectors.toList());
@@ -125,11 +125,9 @@ public class DatabaseService {
                 .collect(Collectors.toList());
     }
 
-    public List<Industry> findBiggestIndustries(int maximumNumber) {
+    public List<Industry> findAllIndustriesSortedBySize() {
         return findAllIndustries().stream()
                 .sorted(Comparator.comparing((Industry industry) -> industry.getCompanies().size()).reversed())
-                .limit(maximumNumber)
                 .collect(Collectors.toList());
     }
-
 }

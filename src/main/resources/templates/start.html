@@ -49,82 +49,72 @@
                 </div>
             </div>
         </nav>
-        <div class="container-fluid mt-3">
+        <div class="container mt-3">
             <div class="row">
-                <div class="col-1"></div>
-                <div class="col-10">
-                    <div th:unless="${newestCompanies.isEmpty()}">
-                        <h2 class="text-center mb-3">Newest Companies</h2>
-                        <div class="card-columns">
-                            <div class="card bg-light" th:each="company : ${newestCompanies}">
-                                <div class="card-body text-center">
-                                    <a th:href="@{/company(company_id=${company.id})}">
-                                        <h4 class="card-title" th:text="${company.name}"></h4>
-                                    </a>
-                                    <p class="card-text" th:text="${company.about}"></p>
-                                    <p class="card-text text-center">
-                                        Industries:
-                                        <span th:each="industry, iterator : ${company.getIndustries()}">
-                                            <span th:text="${iterator.index > 0} ? ',' : ''"></span>
-                                            <a th:href="@{/industry(industry_id=${industry.id})}">
-                                                <span th:text="${industry.name}"></span>
-                                            </a>
-                                        </span>
-                                    </p>
-                                    <p class="card-text text-center">
-                                        Profile created:
-                                        <span th:text="${{company.creationDate}}"></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div th:unless="${newestProducts.isEmpty()}">
-                        <h2 class="text-center mb-3">Newest Products</h2>
-                        <div class="card-columns">
-                            <div class="card bg-light" th:each="product : ${newestProducts}">
-                                <div class="card-body text-center">
-                                    <a th:href="@{/product(product_id=${product.id})}">
-                                        <h4 class="card-title" th:text="${product.name}"></h4>
-                                    </a>
-                                    <p class="card-text" th:text="${product.about}"></p>
-                                    <p class="card-text text-center">
-                                        Offered by:
-                                        <a th:href="@{/company(company_id=${product.company.id})}">
-                                            <span th:text="${product.company.name}"></span>
-                                        </a>
-                                    </p>
-                                    <p class="card-text text-center">
-                                        Product added:
-                                        <span th:text="${{product.creationDate}}"></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div th:unless="${biggestIndustries.isEmpty()}">
-                        <h2 class="text-center mb-3">Biggest Industries</h2>
-                        <div class="card-columns">
-                            <div class="card bg-light" th:each="industry : ${biggestIndustries}">
-                                <div class="card-body text-center">
-                                    <a th:href="@{/industry(industry_id=${industry.id})}">
-                                        <h4 class="card-title" th:text="${industry.name}"></h4>
-                                    </a>
-                                    <p class="card-text" th:text="${industry.about}"></p>
-                                    <p class="card-text text-center">
-                                        Companies in this Industry:
-                                        <span th:text="${{industry.getCompanies().size()}}"></span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col"></div>
+                <div class="col-5 pt-3 pb-3 pr-4 bg-light">
+                    <h2 class="text-center mt-4 mb-5">Recently added Companies</h2>
+                    <ul class="timeline">
+                        <li th:each="company : ${newestCompanies}">
+                            <a th:text="${company.name}" th:href="@{/company(company_id=${company.id})}"></a>
+                            <span class="float-right">
+                                Added: <span th:id="'company'+${company.id}"><!--js-->loading...</span>
+                            </span>
+                            <p th:text="${company.about}"></p>
+                        </li>
+                    </ul>
                 </div>
                 <div class="col-1"></div>
+                <div class="col-5 pt-3 pb-3 pr-4 bg-light">
+                    <h2 class="text-center mt-4 mb-5">Recently added Products</h2>
+                    <ul class="timeline">
+                        <li th:each="product : ${newestProducts}">
+                            <a th:text="${product.name}" th:href="@{/product(product_id=${product.id})}"></a>
+                            <span class="float-right">
+                                Added: <span th:id="'product'+${product.id}"><!--js-->loading...</span>
+                            </span>
+                            <p th:text="${product.about}"></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-11 py-3 px-5 bg-light">
+                    <h2 class="text-center mt-4 mb-5">Industries</h2>
+                    <div th:each="industry : ${industriesSortedBySize}">
+                        <h5 class="text-center">
+                            <a th:text="${industry.name}" th:href="@{/industry(industry_id=${industry.id})}"></a>
+                            <span>(<span th:text="${industry.getCompanies().size()}"></span> companies in this industry)</span>
+                        </h5>
+                        <p th:text="${industry.about}"></p>
+                    </div>
+                 </div>
+                <div class="col"></div>
             </div>
         </div>
     </body>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="moment.js"></script>
+    <script th:inline="javascript">
+
+        /*[# th:each="company : ${newestCompanies}"]*/
+        var companyId = "company"+"[(${company.id})]";
+        var companyCreationDate = "[(${company.creationDate})]";
+        document.getElementById(companyId).innerHTML = moment(companyCreationDate).fromNow();
+        /*[/]*/
+
+        /*[# th:each="product : ${newestProducts}"]*/
+        var productId = "product"+"[(${product.id})]";
+        var productCreationDate = "[(${product.creationDate})]";
+        document.getElementById(productId).innerHTML = moment(productCreationDate).fromNow();
+        /*[/]*/
+
+    </script>
+
 </html>
