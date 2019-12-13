@@ -4,6 +4,7 @@ body {
 
 /* source of the timeline-snippet: https://bootsnipp.com/snippets/xrKXW */
 ul.timeline {
+    height: 100%;
     list-style-type: none;
     position: relative;
 }
@@ -32,4 +33,9 @@ ul.timeline > li:before {
     width: 20px;
     height: 20px;
     z-index: 400;
+}
+
+.timeline-container {
+    height: 600px;
+    overflow: hidden;
 }

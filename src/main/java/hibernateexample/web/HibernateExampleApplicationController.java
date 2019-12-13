@@ -23,8 +23,8 @@ public class HibernateExampleApplicationController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("newestCompanies", databaseService.findNewestCompanies(3));
-        model.addAttribute("newestProducts", databaseService.findNewestProducts(3));
+        model.addAttribute("newestCompanies", databaseService.findNewestCompanies(8));
+        model.addAttribute("newestProducts", databaseService.findNewestProducts(8));
         model.addAttribute("industriesSortedBySize", databaseService.findAllIndustriesSortedBySize());
         return "start";
     }

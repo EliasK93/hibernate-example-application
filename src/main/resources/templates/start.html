@@ -52,9 +52,9 @@
         <div class="container mt-3">
             <div class="row">
                 <div class="col"></div>
-                <div class="col-5 pt-3 pb-3 pr-4 bg-light">
+                <div class="timeline-container col-5 pt-3 pb-3 pr-4 bg-light">
                     <h2 class="text-center mt-4 mb-5">Recently added Companies</h2>
-                    <ul class="timeline">
+                    <ul id="company-timeline" class="timeline">
                         <li th:each="company : ${newestCompanies}">
                             <a th:text="${company.name}" th:href="@{/company(company_id=${company.id})}"></a>
                             <span class="float-right">
@@ -65,9 +65,9 @@
                     </ul>
                 </div>
                 <div class="col-1"></div>
-                <div class="col-5 pt-3 pb-3 pr-4 bg-light">
+                <div class="timeline-container col-5 pt-3 pb-3 pr-4 bg-light">
                     <h2 class="text-center mt-4 mb-5">Recently added Products</h2>
-                    <ul class="timeline">
+                    <ul id="product-timeline" class="timeline">
                         <li th:each="product : ${newestProducts}">
                             <a th:text="${product.name}" th:href="@{/product(product_id=${product.id})}"></a>
                             <span class="float-right">
@@ -98,9 +98,10 @@
         </div>
     </body>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="moment.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="timelineOverflowHiding.js"></script>
     <script th:inline="javascript">
 
         /*[# th:each="company : ${newestCompanies}"]*/
