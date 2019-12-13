@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>All Companies</title>
+        <title>HibernateExample</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -10,45 +10,7 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
-            <a class="navbar-brand" href="/">
-                <img class="navbar-brand rounded" src="pictures/logo.jpg" alt="logo" height="40">
-            </a>
-            <div class="navbar-nav mr-auto">
-                <div class="navbar-nav">
-                    <div class="nav-item">
-                        <a class="nav-link" href="/">Main Page</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_companies">Companies</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_products">Products</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_industries">Industries</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/new_company">Add Company</a>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-nav">
-                <div class="nav-item">
-                    <form class="form-inline" action="/search">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
-                        <label for="selection"></label>
-                        <select class="form-control" id="selection" name="selection">
-                            <option value="all">Everything</option>
-                            <option value="companies">Companies</option>
-                            <option value="products">Products</option>
-                            <option value="industries">Industries</option>
-                        </select>
-                        <button class="btn btn-light ml-3" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <div id="nav"></div>
         <div class="container mt-3">
             <div class="row">
                 <div class="col"></div>
@@ -80,7 +42,7 @@
                 <div class="col"></div>
             </div>
         </div>
-        <div class="container mt-5">
+        <div class="container my-5">
             <div class="row">
                 <div class="col"></div>
                 <div class="col-11 py-3 px-5 bg-light">
@@ -101,6 +63,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="navbarLoader.js"></script>
     <script src="timelineOverflowHiding.js"></script>
     <script th:inline="javascript">
 

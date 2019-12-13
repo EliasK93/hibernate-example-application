@@ -26,7 +26,7 @@ public class HibernateExampleApplicationController {
         model.addAttribute("newestCompanies", databaseService.findNewestCompanies(8));
         model.addAttribute("newestProducts", databaseService.findNewestProducts(8));
         model.addAttribute("industriesSortedBySize", databaseService.findAllIndustriesSortedBySize());
-        return "start";
+        return "main_page";
     }
 
     @GetMapping("/all_companies")
@@ -71,10 +71,10 @@ public class HibernateExampleApplicationController {
         return "industry";
     }
 
-    @GetMapping("/new_company")
+    @GetMapping("/add_company")
     public String addCompanyForm(Model model) {
         model.addAttribute("industry_options", databaseService.findAllIndustriesSortedByName());
-        return "new_company";
+        return "add_company";
     }
 
     @RequestMapping(path = "/company_added", method = RequestMethod.POST)
@@ -101,6 +101,11 @@ public class HibernateExampleApplicationController {
         }
         model.addAttribute("selection", selection);
         return "search_result";
+    }
+
+    @GetMapping("/navbar")
+    public String navbar(Model model) {
+        return "navbar";
     }
 
 }

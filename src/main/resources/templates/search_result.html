@@ -10,45 +10,7 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
-            <a class="navbar-brand" href="/">
-                <img class="navbar-brand rounded" src="pictures/logo.jpg" alt="logo" height="40">
-            </a>
-            <div class="navbar-nav mr-auto">
-                <div class="navbar-nav">
-                    <div class="nav-item">
-                        <a class="nav-link" href="/">Main Page</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_companies">Companies</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_products">Products</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/all_industries">Industries</a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="/new_company">Add Company</a>
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-nav">
-                <div class="nav-item">
-                    <form class="form-inline" action="/search">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search">
-                        <label for="selection"></label>
-                        <select class="form-control" id="selection" name="selection">
-                            <option value="all">Everything</option>
-                            <option value="companies">Companies</option>
-                            <option value="products">Products</option>
-                            <option value="industries">Industries</option>
-                        </select>
-                        <button class="btn btn-light ml-3" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <div id="nav"></div>
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-1"></div>
@@ -117,6 +79,7 @@
         </div>
     </body>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="navbarLoader.js"></script>
 </html>
